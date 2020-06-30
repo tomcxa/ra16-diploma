@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CatalogCard = ({card}) => {  
   return (
     <div className="col-4">
-      <div className="card">
+      <div className="card catalog-item-card">
         <img
           src={card.images[0]}
           className="card-img-top img-fluid"
@@ -12,9 +13,9 @@ const CatalogCard = ({card}) => {
         <div className="card-body">
           <p className="card-text">{card.title}</p>
           <p className="card-text">{card.price} руб.</p>
-          <a href="/products/1.html" className="btn btn-outline-primary">
+          <Link to={`/product/${card.id}`} className="btn btn-outline-primary">
             Заказать
-          </a>
+          </Link>
         </div>
       </div>
     </div>

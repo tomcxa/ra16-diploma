@@ -7,9 +7,10 @@ const url = "http://localhost:7070/api/top-sales";
 
 const TopSales = () => {
   const [data, loading, error] = useJsonFetch(url);
-  console.log(data);
 
   if (loading) return <Loader />;
+
+  if (error) return null
 
   return (
     <section className="top-sales">

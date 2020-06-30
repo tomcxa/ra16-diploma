@@ -10,38 +10,41 @@ import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
+import GlobalProvider from "./contexts/GlobalProvider";
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Main>
-      <Switch>
-        <Route path="/about">
-          <AboutPage />
-        </Route>
-        <Route path="/catalog/:id">
-          <ProductPage />
-        </Route>
-        <Route path="/catalog">
-          <CatalogPage />
-        </Route>
-        <Route path="/contacts">
-          <ContactsPage />
-        </Route>
-        <Route path="/cart">
-          <CartPage />
-        </Route>
-        <Route path="/404">
-          <ErrorPage />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
-      </Main>
-      <Footer />
-    </Router>
+    <GlobalProvider>
+      <Router>
+        <Header />
+        <Main>
+          <Switch>
+            <Route path="/about">
+              <AboutPage />
+            </Route>
+            <Route path="/product/:id">
+              <ProductPage />
+            </Route>
+            <Route path="/catalog">
+              <CatalogPage />
+            </Route>
+            <Route path="/contacts">
+              <ContactsPage />
+            </Route>
+            <Route path="/cart">
+              <CartPage />
+            </Route>
+            <Route path="/404">
+              <ErrorPage />
+            </Route>
+            <Route path="/">
+              <HomePage />
+            </Route>
+          </Switch>
+        </Main>
+        <Footer />
+      </Router>
+    </GlobalProvider>
   );
 }
 

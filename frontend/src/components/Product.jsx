@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useJsonFetch from "../hooks/useJsonFetch";
+import { useParams, Redirect } from "react-router-dom";
+import Loader from "./Loader";
+
+const getUrl = (id) => {
+  const url = `http://localhost:7070/api/items/${id}`
+  return url
+}
 
 const Product = () => {
+  const { id } = useParams()
+  const [data, loading, error] = useJsonFetch(getUrl(id))
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
+  if (loading) return <Loader />
+
+  if (error) return <Redirect to='/404' />
+
   return (
     <section className="catalog-item">
-      <h2 className="text-center">Босоножки 'MYER'</h2>
+      <h2 className="text-center">{data.title}</h2>
       <div className="row">
         <div className="col-5">
           <img
-            src="https://cdn-images.farfetch-contents.com/12/93/06/52/12930652_13567910_1000.jpg"
+            // src={data.images[0] || ''}
             className="img-fluid"
             alt=""
           />
@@ -17,27 +36,27 @@ const Product = () => {
             <tbody>
               <tr>
                 <td>Артикул</td>
-                <td>1000046</td>
+                <td>{data.sku}</td>
               </tr>
               <tr>
                 <td>Производитель</td>
-                <td>PAUL ANDREW</td>
+                <td>{data.manufacturer}</td>
               </tr>
               <tr>
                 <td>Цвет</td>
-                <td>Чёрный</td>
+                <td>{data.color}</td>
               </tr>
               <tr>
                 <td>Материалы</td>
-                <td>Кожа</td>
+                <td>{data.materials}</td>
               </tr>
               <tr>
                 <td>Сезон</td>
-                <td>Лето</td>
+                <td>{data.seasons}</td>
               </tr>
               <tr>
                 <td>Повод</td>
-                <td>Прогулка</td>
+                <td>{data.reasons}</td>
               </tr>
             </tbody>
           </table>
