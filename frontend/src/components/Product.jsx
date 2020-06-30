@@ -26,7 +26,7 @@ const Product = () => {
       <div className="row">
         <div className="col-5">
           <img
-            // src={data.images[0] || ''}
+            src={data.images && data.images[0]}
             className="img-fluid"
             alt=""
           />
@@ -48,23 +48,22 @@ const Product = () => {
               </tr>
               <tr>
                 <td>Материалы</td>
-                <td>{data.materials}</td>
+                <td>{data.material}</td>
               </tr>
               <tr>
                 <td>Сезон</td>
-                <td>{data.seasons}</td>
+                <td>{data.season}</td>
               </tr>
               <tr>
                 <td>Повод</td>
-                <td>{data.reasons}</td>
+                <td>{data.reason}</td>
               </tr>
             </tbody>
           </table>
           <div className="text-center">
             <p>
               Размеры в наличии:{" "}
-              <span className="catalog-item-size selected">18 US</span>{" "}
-              <span className="catalog-item-size">20 US</span>
+              {<span className="catalog-item-size">20 US</span>}
             </p>
             <p>
               Количество:{" "}
