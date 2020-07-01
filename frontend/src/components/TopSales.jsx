@@ -10,7 +10,7 @@ const TopSales = () => {
 
   if (loading) return <Loader />;
 
-  if (error) return null
+  if (error) return null;
 
   return (
     <section className="top-sales">

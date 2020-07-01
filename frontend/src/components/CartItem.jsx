@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useContext, useCallback } from "react";
+import { Link } from "react-router-dom";
+import GlobalContext from "../contexts/GlobalContext";
 
-const CartItem = () => {
+const CartItem = ({ item, index }) => {
+  const { removeFromCart } = useContext(GlobalContext);
+
+  const removeHandler = useCallback(() => removeFromCart(item.id), [
+    item.id,
+    removeFromCart,
+  ]);
+
   return (
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">{index}</th>
       <td>
-        <a href="/products/1.html">Босоножки 'MYER'</a>
+        <Link to={`/products/${item.id}`}>{item.title}</Link>
       </td>
-      <td>18 US</td>
-      <td>1</td>
-      <td>34 000 руб.</td>
-      <td>34 000 руб.</td>
+      <td>{item.size}</td>
+      <td>{item.size}</td>
+      <td>{item.price}</td>
+      <td>{item.totalPrice}</td>
       <td>
-        <button className="btn btn-outline-danger btn-sm">Удалить</button>
+        <button
+          onClick={removeHandler}
+          className="btn btn-outline-danger btn-sm"
+        >
+          Удалить
+        </button>
       </td>
     </tr>
   );

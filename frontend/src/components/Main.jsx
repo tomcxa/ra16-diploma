@@ -1,9 +1,9 @@
-import React from 'react'
-import Banner from './Banner'
+import React from "react";
+import Banner from "./Banner";
 
-const Main = ({children}) => {
-    return (
-        <main className="container">
+const Main = ({ children }) => {
+  return (
+    <main className="container">
       <div className="row">
         <div className="col">
           <Banner />
@@ -11,7 +11,7 @@ const Main = ({children}) => {
         </div>
       </div>
     </main>
-    )
-}
+  );
+};
 
-export default Main
+export default Main;

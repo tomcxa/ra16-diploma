@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const CatalogCard = ({card}) => {  
+const CatalogCard = ({ card }) => {
   return (
     <div className="col-4">
       <div className="card catalog-item-card">
