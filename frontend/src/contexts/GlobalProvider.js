@@ -30,7 +30,7 @@ const GlobalProvider = ({ children }) => {
 
   const [search, setSearch] = useState("");
   const [anchors, setAnchors] = useState(defaultAnchors);
-  const [cart, setCart, remove] = useLocalStorage("cart", defaultCart);
+  const [cart, setCart] = useLocalStorage("cart", defaultCart);
   const [orderStatus, setOrderStatus] = useState(defaultOrderStatus);
 
   function changeAnchors(newValue) {
@@ -47,6 +47,7 @@ const GlobalProvider = ({ children }) => {
 
   function addToCart(item) {
     setCart((prev) => {
+      console.log(prev)
       const { items } = prev;
       const index = items.findIndex(
         (o) => o.id === item.id && o.size === item.size
@@ -70,6 +71,14 @@ const GlobalProvider = ({ children }) => {
       items.splice(index, 1);
       return { ...prev };
     });
+  }
+
+  function remove() {
+    setCart(prev => {
+      const { items } = prev;
+      items.splice(0, items.length);
+      return { ...prev };
+    })
   }
 
   return (

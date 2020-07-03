@@ -22,14 +22,20 @@ const Cart = () => {
   }, [path]);
 
   useEffect(() => {
+    console.log(cart)
+  })
+
+  useEffect(() => {
     if (orderStatus.success) {
       remove()
     }
-  }, [orderStatus.success, remove])
+  }, [orderStatus.success, orderStatusChange, remove])
 
   function handleToCatalog(event) {
     event.preventDefault();
     changeAnchors({ q: "", categoryId: "", offset: 0 });
+    console.log(cart)
+    orderStatusChange({success: false})
     history.push("/catalog");
   }
 
