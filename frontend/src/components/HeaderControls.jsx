@@ -55,7 +55,7 @@ const HeaderControls = () => {
           className="header-controls-pic header-controls-cart"
           onClick={toCart}
         >
-          {!!cart.items.length && <div className="header-controls-cart-full">{cart.items.length}</div>}
+          {!!cart?.items?.length && <div className="header-controls-cart-full">{cart.items.length}</div>}
           <div className="header-controls-cart-menu"></div>
         </div>
       </div>

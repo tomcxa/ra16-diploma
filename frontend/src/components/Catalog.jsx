@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import useJsonFetch from "../hooks/useJsonFetch";
+import { useRouteMatch } from "react-router-dom";
+import { useAsyncRetry } from "react-use";
+import GlobalContext from "../contexts/GlobalContext";
 import CatalogCategories from "./CatalogCategories";
 import CatalogCardList from "./CatalogCardList";
-import GlobalContext from "../contexts/GlobalContext";
-import { useRouteMatch } from "react-router-dom";
 
 function getUrl({ categoryId, offset, q }) {
   let url = "http://localhost:7070/api/items";
@@ -44,7 +44,11 @@ const Catalog = ({ children }) => {
   const { anchors, changeAnchors } = useContext(GlobalContext);
   const [cards, setCards] = useState([]);
   const url = getUrl(anchors);
-  const [data, loading, error] = useJsonFetch(url);
+  const state = useAsyncRetry(async () => {
+    const response = await fetch(url);
+    const result = await response.json();
+    return result
+  }, [url]);
   const catalogRef = useRef(null);
   const { path } = useRouteMatch();
 
@@ -55,8 +59,8 @@ const Catalog = ({ children }) => {
 
   // при изменении данных с сервера присовокупляем их в каталог
   useEffect(() => {
-    setCards((prev) => [...prev, ...data]);
-  }, [data]);
+    if (state.value) setCards((prev) => [...prev, ...state.value]);
+  }, [state.value]);
 
   useEffect(() => {
     if (path === "/catalog") {
@@ -79,13 +83,13 @@ const Catalog = ({ children }) => {
       <h2 className="text-center">Каталог</h2>
       {children}
       <CatalogCategories categoryChange={categoryChange} />
-      <CatalogCardList data={cards} loading={loading} error={error} />
-      {data.length < 6 ? null : (
+      <CatalogCardList data={cards} loading={state.loading} error={state.error} retry={state.retry} />
+      {state.value?.length < 6 || state.error ? null : (
         <div className="text-center">
           <button
             className="btn btn-outline-primary"
             onClick={handleLoad}
-            disabled={loading}
+            disabled={state.loading}
           >
             Загрузить ещё
           </button>

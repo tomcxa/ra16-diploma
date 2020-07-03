@@ -31,8 +31,8 @@ const fortune = (ctx, body = null, status = 200) => {
             // Uncomment for error generation
             // if (Math.random() > 0.8) {
             //     reject(new Error('Something bad happened'));
-            //     return;
-            // }
+            //      return;
+            //  }
 
             ctx.response.status = status;
             ctx.response.body = body;

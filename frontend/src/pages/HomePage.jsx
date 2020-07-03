@@ -6,7 +6,6 @@ const HomePage = () => {
   return (
     <>
       <TopSales />
-
       <Catalog />
     </>
   );

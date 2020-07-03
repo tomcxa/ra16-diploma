@@ -14,37 +14,37 @@ import GlobalProvider from "./contexts/GlobalProvider";
 
 function App() {
   return (
-    <GlobalProvider>
-      <Router>
+    <Router>
+      <GlobalProvider>
         <Header />
         <Main>
           <Switch>
-            <Route path="/about">
+            <Route exact path="/about">
               <AboutPage />
             </Route>
-            <Route path="/product/:id">
+            <Route exact path="/product/:id">
               <ProductPage />
             </Route>
-            <Route path="/catalog">
+            <Route exact path="/catalog">
               <CatalogPage />
             </Route>
-            <Route path="/contacts">
+            <Route exact path="/contacts">
               <ContactsPage />
             </Route>
-            <Route path="/cart">
+            <Route exact path="/cart">
               <CartPage />
             </Route>
-            <Route path="/404">
-              <ErrorPage />
-            </Route>
-            <Route path="/">
+            <Route exact path="/">
               <HomePage />
+            </Route>
+            <Route path="*">
+              <ErrorPage />
             </Route>
           </Switch>
         </Main>
-        <Footer />
-      </Router>
-    </GlobalProvider>
+      </GlobalProvider>
+      <Footer />
+    </Router>
   );
 }
 

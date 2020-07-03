@@ -4,10 +4,9 @@ import CatalogSearchForm from "../components/CatalogSearchForm";
 
 const CatalogPage = () => {
   return (
-      <Catalog>
-          <CatalogSearchForm />
-      </Catalog>
-
+    <Catalog>
+      <CatalogSearchForm />
+    </Catalog>
   );
 };
 

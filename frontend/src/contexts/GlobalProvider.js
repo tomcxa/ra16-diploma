@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useLocalStorage } from "react-use";
 import GlobalContext from "./GlobalContext";
 
 const GlobalProvider = ({ children }) => {
@@ -21,18 +22,16 @@ const GlobalProvider = ({ children }) => {
     ],
   };
 
+  const defaultOrderStatus = {
+    loading: false,
+    success: false,
+    error: false,
+  };
+
   const [search, setSearch] = useState("");
   const [anchors, setAnchors] = useState(defaultAnchors);
-  const [cart, setCart] = useState(defaultCart);
-
-  useEffect(() => {
-    const cartInStorage = JSON.parse(localStorage.getItem("cart"));
-    if (!cartInStorage.items.length) setCart(cartInStorage);
-  }, []);
-
-  useEffect(() => {
-    if (cart.items.length) localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+  const [cart, setCart, remove] = useLocalStorage("cart", defaultCart);
+  const [orderStatus, setOrderStatus] = useState(defaultOrderStatus);
 
   function changeAnchors(newValue) {
     setAnchors((prev) => ({ ...prev, ...newValue }));
@@ -42,16 +41,35 @@ const GlobalProvider = ({ children }) => {
     setSearch(input);
   }
 
+  function orderStatusChange(newStatus) {
+    setOrderStatus((prev) => ({ ...prev, ...newStatus }));
+  }
+
   function addToCart(item) {
-    console.log(item);
     setCart((prev) => {
-      prev.items.push(item);
-      return { ...cart, ...prev };
+      const { items } = prev;
+      const index = items.findIndex(
+        (o) => o.id === item.id && o.size === item.size
+      );
+      if (index !== -1) {
+        const updatedItem = items[index];
+        updatedItem.count += item.count;
+        updatedItem.count =
+          updatedItem.count > 10 ? (updatedItem.count = 10) : updatedItem.count;
+      } else {
+        items.push(item);
+      }
+      return { ...prev };
     });
   }
 
   function removeFromCart(id) {
-    console.log(id);
+    setCart((prev) => {
+      const { items } = prev;
+      const index = items.findIndex((item) => item.id + item.size === id);
+      items.splice(index, 1);
+      return { ...prev };
+    });
   }
 
   return (
@@ -64,6 +82,9 @@ const GlobalProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
+        remove,
+        orderStatus,
+        orderStatusChange,
       }}
     >
       {children}

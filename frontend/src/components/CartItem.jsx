@@ -5,8 +5,9 @@ import GlobalContext from "../contexts/GlobalContext";
 const CartItem = ({ item, index }) => {
   const { removeFromCart } = useContext(GlobalContext);
 
-  const removeHandler = useCallback(() => removeFromCart(item.id), [
+  const removeHandler = useCallback(() => removeFromCart(item.id + item.size), [
     item.id,
+    item.size,
     removeFromCart,
   ]);
 
@@ -17,9 +18,9 @@ const CartItem = ({ item, index }) => {
         <Link to={`/products/${item.id}`}>{item.title}</Link>
       </td>
       <td>{item.size}</td>
-      <td>{item.size}</td>
+      <td>{item.count}</td>
       <td>{item.price}</td>
-      <td>{item.totalPrice}</td>
+      <td>{item.count * item.price}</td>
       <td>
         <button
           onClick={removeHandler}

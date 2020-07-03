@@ -1,14 +1,18 @@
 /* eslint-disable eqeqeq */
-import React from "react";
-import { useContext } from "react";
-import useJsonFetch from "../hooks/useJsonFetch";
+import React, { useContext } from "react";
+import { useAsyncRetry } from "react-use";
 import GlobalContext from "../contexts/GlobalContext";
 import Loader from "./Loader";
+import RetryButton from "./RetryButton";
 
-const urlCat = "http://localhost:7070/api/categories";
+const url = "http://localhost:7070/api/categories";
 
 const CatalogCategories = () => {
-  const [data, loading, error] = useJsonFetch(urlCat);
+  const state = useAsyncRetry(async () => {
+    const response = await fetch(url);
+    const result = await response.json();
+    return result;
+  }, [url]);
   const {
     anchors: { categoryId },
     changeAnchors,
@@ -18,7 +22,9 @@ const CatalogCategories = () => {
     changeAnchors({ categoryId: id, offset: 0 });
   }
 
-  if (loading) return <Loader />;
+  if (state.loading) return <Loader />;
+
+  if (state.error) return <RetryButton retry={state.retry} />;
 
   return (
     <ul className="catalog-categories nav justify-content-center">
@@ -34,8 +40,8 @@ const CatalogCategories = () => {
           Все
         </a>
       </li>
-      {!error &&
-        data.map((category) => (
+      {state.value &&
+        state.value.map((category) => (
           <li key={category.id} className="nav-item">
             <a
               onClick={(e) => {

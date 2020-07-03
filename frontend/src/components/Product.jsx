@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
-import useJsonFetch from "../hooks/useJsonFetch";
-import { useParams, Redirect } from "react-router-dom";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { useParams, useRouteMatch, useHistory } from "react-router-dom";
+import { useAsyncRetry } from "react-use";
 import Loader from "./Loader";
 import GlobalContext from "../contexts/GlobalContext";
+import RetryButton from "./RetryButton";
 
 const getUrl = (id) => {
   const url = `http://localhost:7070/api/items/${id}`;
@@ -15,10 +16,24 @@ const setSelectedClass = (selected, current) => {
 
 const Product = () => {
   const { id } = useParams();
+  const { path } = useRouteMatch();
+  const history = useHistory();
+  const productRef = useRef(null);
   const [selectedSize, setSize] = useState("");
   const [count, setCount] = useState(1);
-  const [data, loading, error] = useJsonFetch(getUrl(id));
+  const [imgError, setImgError] = useState(false)
+  const state = useAsyncRetry(async () => {
+    const response = await fetch(getUrl(id));
+    const result = await response.json();
+    return result;
+  });
   const { addToCart } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (path === `/product/${id}`) {
+      productRef.current.scrollIntoView(true);
+    }
+  }, [path, id]);
 
   function selectSize(size) {
     setSize(size);
@@ -40,30 +55,35 @@ const Product = () => {
 
   function handleAddToCart() {
     const cartItem = {
-      id: id,
-      title: data.title,
+      id: +id,
+      title: state.value?.title,
       size: selectedSize,
       count: count,
-      price: data.price,
-      totalPrice: data.price * count,
+      price: state.value?.price,
     };
 
     addToCart(cartItem);
+    history.push('/cart');
   }
 
-  const avalibleSizes = data.sizes?.filter(({ avalible }) => avalible);
+  function handleImgError() {
+    setImgError(true)
+  }
 
-  if (loading) return <Loader />;
+  const avalibleSizes = state.value?.sizes?.filter(({ avalible }) => avalible);
 
-  if (error) return <Redirect to="/404" />;
+  if (state.loading) return <Loader />;
+
+  if (state.error) return <RetryButton retry={state.retry} />;
 
   return (
-    <section className="catalog-item">
-      <h2 className="text-center">{data.title}</h2>
+    <section ref={productRef} className="catalog-item">
+      <h2 className="text-center">{state.value?.title}</h2>
       <div className="row">
         <div className="col-5">
           <img
-            src={data.images && data.images[0]}
+            src={imgError ? 'http://placehold.it/400x400/33bee5/FFFFFF/&text=ФОТО ВРЕМЕННО ОТСУТСТВУЕТ' : state.value?.images && state.value?.images[0]}
+            onError={handleImgError}
             className="img-fluid"
             alt=""
           />
@@ -73,27 +93,27 @@ const Product = () => {
             <tbody>
               <tr>
                 <td>Артикул</td>
-                <td>{data.sku}</td>
+                <td>{state.value?.sku}</td>
               </tr>
               <tr>
                 <td>Производитель</td>
-                <td>{data.manufacturer}</td>
+                <td>{state.value?.manufacturer}</td>
               </tr>
               <tr>
                 <td>Цвет</td>
-                <td>{data.color}</td>
+                <td>{state.value?.color}</td>
               </tr>
               <tr>
                 <td>Материалы</td>
-                <td>{data.material}</td>
+                <td>{state.value?.material}</td>
               </tr>
               <tr>
                 <td>Сезон</td>
-                <td>{data.season}</td>
+                <td>{state.value?.season}</td>
               </tr>
               <tr>
                 <td>Повод</td>
-                <td>{data.reason}</td>
+                <td>{state.value?.reason}</td>
               </tr>
             </tbody>
           </table>
