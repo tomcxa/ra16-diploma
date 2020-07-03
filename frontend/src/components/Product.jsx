@@ -6,7 +6,7 @@ import GlobalContext from "../contexts/GlobalContext";
 import RetryButton from "./RetryButton";
 
 const getUrl = (id) => {
-  const url = `http://localhost:7070/api/items/${id}`;
+  const url = `${process.env.REACT_APP_API_URL}/items/${id}`;
   return url;
 };
 

@@ -9,7 +9,6 @@ const CatalogCard = ({ card }) => {
   }, [setImgError]);
 
   return (
-    // <div className="col-4">
     <div className="card mb-3" style={{ minWidth: "30%" }}>
       <div className="image-box">
       <img
@@ -27,7 +26,6 @@ const CatalogCard = ({ card }) => {
         </Link>
       </div>
     </div>
-    // </div>
   );
 };
 

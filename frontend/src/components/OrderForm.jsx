@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import GlobalContext from "../contexts/GlobalContext";
 
-const url = "http://localhost:7070/api/order";
+const url = `${process.env.REACT_APP_API_URL}/order`;
 
 const OrderForm = () => {
   const defaultForm = {

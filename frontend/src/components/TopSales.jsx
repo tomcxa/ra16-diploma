@@ -3,7 +3,7 @@ import { useAsync } from "react-use";
 import Loader from "./Loader";
 import CatalogCard from "./CatalogCard";
 
-const url = "http://localhost:7070/api/top-sales";
+const url = `${process.env.REACT_APP_API_URL}/top-sales`;
 
 const TopSales = () => {
   const state = useAsync(async () => {

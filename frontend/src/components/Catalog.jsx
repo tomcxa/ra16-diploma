@@ -6,7 +6,7 @@ import CatalogCategories from "./CatalogCategories";
 import CatalogCardList from "./CatalogCardList";
 
 function getUrl({ categoryId, offset, q }) {
-  let url = "http://localhost:7070/api/items";
+  let url = `${process.env.REACT_APP_API_URL}/items`;
   let anchor = "";
   if (categoryId && q && offset) {
     anchor = `?q=${q}&categoryId=${categoryId}&offset=${offset}`;

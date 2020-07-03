@@ -5,7 +5,7 @@ import GlobalContext from "../contexts/GlobalContext";
 import Loader from "./Loader";
 import RetryButton from "./RetryButton";
 
-const url = "http://localhost:7070/api/categories";
+const url = `${process.env.REACT_APP_API_URL}/categories`;
 
 const CatalogCategories = () => {
   const state = useAsyncRetry(async () => {
