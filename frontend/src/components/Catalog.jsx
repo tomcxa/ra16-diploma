@@ -52,6 +52,12 @@ const Catalog = ({ children }) => {
   const catalogRef = useRef(null);
   const { path } = useRouteMatch();
 
+  useEffect(() => {
+    if (path === '/catalog') {
+      setTimeout(() => catalogRef.current.scrollIntoView(true), 0)
+    }
+  }, [path])
+
   //обнуляем каталог если изменилась категория или поисковый запрос
   useEffect(() => {
     setCards([]);
@@ -61,12 +67,6 @@ const Catalog = ({ children }) => {
   useEffect(() => {
     if (state.value) setCards((prev) => [...prev, ...state.value]);
   }, [state.value]);
-
-  useEffect(() => {
-    if (path === "/catalog") {
-      catalogRef.current.scrollIntoView(true);
-    }
-  }, [path]);
 
   function handleLoad() {
     const { offset } = anchors;

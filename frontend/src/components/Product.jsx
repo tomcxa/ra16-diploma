@@ -31,7 +31,7 @@ const Product = () => {
 
   useEffect(() => {
     if (path === `/product/${id}`) {
-      productRef.current.scrollIntoView(true);
+      setTimeout(() => productRef.current.scrollIntoView(true), 200);
     }
   }, [path, id]);
 
@@ -77,7 +77,7 @@ const Product = () => {
   if (state.error) return <RetryButton retry={state.retry} />;
 
   return (
-    <section ref={productRef} className="catalog-item">
+    <section ref={productRef} id='product' className="catalog-item">
       <h2 className="text-center">{state.value?.title}</h2>
       <div className="row">
         <div className="col-5">

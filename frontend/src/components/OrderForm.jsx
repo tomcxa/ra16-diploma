@@ -25,19 +25,17 @@ const OrderForm = () => {
         ...cart,
       };
       try {
+        orderStatusChange({ loading: true });
         const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
-        orderStatusChange({ loading: true });
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-        console.log("sucess");
         orderStatusChange({ success: true });
       } catch (e) {
-        console.log(e)
         orderStatusChange({ error: true });
       } finally {
         orderStatusChange({ loading: false });

@@ -54,9 +54,7 @@ const GlobalProvider = ({ children }) => {
       );
       if (index !== -1) {
         const updatedItem = items[index];
-        updatedItem.count += item.count;
-        updatedItem.count =
-          updatedItem.count > 10 ? (updatedItem.count = 10) : updatedItem.count;
+        updatedItem.count = Math.min(updatedItem.count + item.count, 10);
       } else {
         items.push(item);
       }
